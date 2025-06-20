@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インフォグラフィック：新たなリヴァイアサン</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --card-bg-color: #16213e;
+            --primary-text-color: #e0e0e0;
+            --secondary-text-color: #a0a0c0;
+            --header-color: #ffffff;
+            --accent-color-1: #0f3460;
+            --accent-color-2: #533483;
+            --highlight-color: #e94560;
+            --border-color: #533483;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--accent-color-1), var(--bg-color));
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 3em;
+            color: var(--header-color);
+            margin: 0;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+        }
+
+        header h2 {
+            font-size: 1.4em;
+            color: var(--secondary-text-color);
+            font-weight: 300;
+        }
+        header p {
+            color: var(--secondary-text-color);
+        }
+
+        nav.table-of-contents {
+            position: sticky;
+            top: 0;
+            background-color: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        nav.table-of-contents ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 0;
+            padding: 0 20px;
+        }
+
+        nav.table-of-contents li {
+            margin: 0 12px;
+        }
+
+        nav.table-of-contents a {
+            color: var(--primary-text-color);
+            text-decoration: none;
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav.table-of-contents a:hover {
+            background-color: var(--highlight-color);
+            color: var(--header-color);
+        }
+
+        section {
+            padding-top: 60px; /* Offset for sticky nav */
+            margin-top: -40px; /* Hide offset */
+        }
+
+        .chapter-title {
+            font-size: 2.5em;
+            color: var(--header-color);
+            border-left: 5px solid var(--highlight-color);
+            padding-left: 15px;
+            margin-bottom: 40px;
+        }
+
+        .slide {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+        
+        .slide:hover {
+            transform: translateY(-5px);
+        }
+
+        .slide-title {
+            font-size: 1.6em;
+            color: var(--header-color);
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.1em;
+            color: var(--secondary-text-color);
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+        
+        .slide ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .slide li::before {
+            content: '»';
+            position: absolute;
+            left: 0;
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+        
+        strong {
+            color: var(--highlight-color);
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--accent-color-1);
+            color: var(--header-color);
+            font-weight: 700;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: var(--accent-color-1);
+        }
+        
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .diagram-item {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--highlight-color);
+        }
+
+        .diagram-arrow {
+            font-size: 2em;
+            color: var(--highlight-color);
+        }
+
+        .timeline {
+            position: relative;
+            width: 100%;
+            padding: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            width: 3px;
+            height: 100%;
+            background: var(--border-color);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            width: 50%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 60px;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+             padding-left: 60px;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            border: 4px solid var(--highlight-color);
+            top: 30px;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+            transform: translateX(50%);
+        }
+
+        .timeline-content {
+            padding: 15px;
+            background: var(--accent-color-1);
+            border-radius: 8px;
+        }
+        .timeline-content h4 {
+            margin: 0 0 10px 0;
+            color: var(--header-color);
+        }
+        .timeline-content p {
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--secondary-text-color);
+        }
+
+        .quote {
+            border-left: 4px solid var(--highlight-color);
+            padding-left: 15px;
+            font-style: italic;
+            color: var(--secondary-text-color);
+            margin: 20px 0;
+        }
+        .quote p { margin: 0; }
+
+        .logo {
+            font-weight: bold;
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .openai-logo { background-color: #10a37f; }
+        .google-logo { background-color: #4285F4; }
+        .anthropic-logo { background-color: #d07559; }
+        .microsoft-logo { background-color: #00A4EF; }
+        .aws-logo { background-color: #FF9900; }
+        .meta-logo { background-color: #0062E0; }
+        
+        .section-header {
+            font-size: 1.2em;
+            color: var(--header-color);
+            font-weight: 700;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .references ul {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            list-style: none;
+            padding-left: 0;
+        }
+        .references li {
+            padding-left: 0;
+            font-size: 0.8em;
+            margin-bottom: 8px;
+        }
+        .references li::before {
+            content: none;
+        }
+        .references a {
+            color: var(--secondary-text-color);
+            text-decoration: underline;
+            word-break: break-all;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2em; }
+            header h2 { font-size: 1.1em; }
+            .chapter-title { font-size: 2em; }
+            
+            .timeline::before { left: 10px; }
+            .timeline-item { width: 100%; padding-left: 40px; padding-right: 0; text-align: left !important; }
+            .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { left: 0; }
+            .timeline-item::after { left: 10px; }
+            
+            .references ul { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>新たなリヴァイアサン</h1>
+        <h2>AI時代に誕生した、国家にも匹敵する新たな巨大権力を追う</h2>
+        <p>2025年6月時点のAI業界構造と、その形成に至るまでの戦略的軌跡</p>
+    </header>
+
+    <nav class="table-of-contents">
+        <ul>
+            <li><a href="#intro">導入</a></li>
+            <li><a href="#chapter1">第1章</a></li>
+            <li><a href="#chapter2">第2章</a></li>
+            <li><a href="#chapter3">第3章</a></li>
+            <li><a href="#chapter4">第4章</a></li>
+            <li><a href="#chapter5">第5章</a></li>
+            <li><a href="#chapter6">第6章</a></li>
+            <li><a href="#conclusion">結論</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- 導入セクション -->
+        <section id="intro">
+            <div class="slide">
+                <h3 class="slide-title">はじめに：AIが構築した世界</h3>
+                <p class="slide-subtitle">現代社会の新たな基盤としての生成AI</p>
+                <p><strong>キーメッセージ：</strong> 2025年、世界はAIが構築した新たな技術基盤の上で動いている</p>
+                <p class="section-header">要点：</p>
+                <ul>
+                    <li>ソフトウェア開発、顧客サービス、コンテンツ制作など主要産業が根本的に再構築</li>
+                    <li>この変革を主導するのは3つの組織：OpenAI、Google DeepMind、Anthropic</li>
+                    <li>彼らを支える巨大クラウド企業（Microsoft, Google Cloud, AWS）の存在</li>
+                </ul>
+                <div class="diagram-container">
+                    <div class="diagram-item">産業 (コード, ヘッドセット, カメラ)</div>
+                    <div class="diagram-arrow">⇔</div>
+                    <div class="diagram-item" style="border-color: #10a37f;">AI コア</div>
+                    <div class="diagram-arrow">⇔</div>
+                    <div class="diagram-item">クラウド基盤</div>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">本レポートの目的と構成</h3>
+                <p class="slide-subtitle">我々が生きるAIの世界はいかにして創造されたか</p>
+                <p class="section-header">目的：</p>
+                <ul>
+                    <li>今日の市場構造を形成した歴史、因果関係、戦略的決定を解き明かす</li>
+                    <li>学術的理想、資本投資、安全性の哲学、クラウド戦略の複雑な衝突を分析</li>
+                </ul>
+                <p class="section-header">構成：</p>
+                <ul>
+                    <li>「御三家」の紹介と特徴分析</li>
+                    <li>技術的黎明期から現代に至るまでの歴史的変遷</li>
+                    <li>対抗勢力と規制の動向</li>
+                    <li>未来への展望と未解決の問い</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">【Executive Summary】生成AI「御三家」比較</h3>
+                <p class="slide-subtitle">比較概要：3つの哲学、3つの戦略（2025年6月時点）</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>項目</th>
+                            <th><span class="logo openai-logo">OpenAI</span></th>
+                            <th><span class="logo google-logo">Google DeepMind</span></th>
+                            <th><span class="logo anthropic-logo">Anthropic</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>設立理念</td>
+                            <td>「全人類への利益」</td>
+                            <td>「知能を解明する」</td>
+                            <td>「AIの安全性と研究」</td>
+                        </tr>
+                        <tr>
+                            <td>モデル</td>
+                            <td>GPT-4o / GPT-4.1</td>
+                            <td>Gemini 2.5 Pro</td>
+                            <td>Claude Opus 4</td>
+                        </tr>
+                        <tr>
+                            <td>技術的差別化</td>
+                            <td>リアルタイム・マルチモーダル</td>
+                            <td>巨大コンテキストと「思考」</td>
+                            <td>憲法AIとASL</td>
+                        </tr>
+                        <tr>
+                            <td>クラウド</td>
+                            <td>Microsoft Azure（独占）</td>
+                            <td>Google Cloud（垂直統合）</td>
+                            <td>AWS & Google Cloud</td>
+                        </tr>
+                        <tr>
+                            <td>ガバナンス</td>
+                            <td>利益上限付き子会社</td>
+                            <td>伝統的な企業構造</td>
+                            <td>公益法人＋長期利益信託</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 第1章 -->
+        <section id="chapter1">
+            <h2 class="chapter-title">第1章 静かなる夜明け（2018年以前）：Transformerの時代</h2>
+            <div class="slide">
+                <h3 class="slide-title">革命前夜：RNN/CNNの限界</h3>
+                <p class="slide-subtitle">Transformer以前の世界</p>
+                <p class="section-header">主流技術（2010年代半ば）：</p>
+                <ul>
+                    <li><strong>リカレントニューラルネットワーク（RNN）:</strong> 文章を読むAI、音声を認識するAI、翻訳するAI</li>
+                    <li><strong>畳み込みニューラルネットワーク（CNN）:</strong> 顔認識、医療画像の診断、自動運転のカメラ認識 など。</li>
+                </ul>
+                <p class="section-header">達成した成功：</p>
+                <p>画像認識、短期的なシーケンス処理</p>
+                <p class="section-header">構造的な限界：</p>
+                <ul>
+                    <li>文章の中で離れた場所にある単語同士のつながりを、AIが正しく理解するのが難しい</li>
+                    <li>技術的停滞感が次なるブレークスルーの土壌に</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">特異点：「Attention Is All You Need」(2017年)</h3>
+                <p class="slide-subtitle">すべては一篇の論文から始まった</p>
+                <p><strong>論文：</strong> "Attention Is All You Need" (Google, トロント大学)</p>
+                <p class="section-header">核心的イノベーション：</p>
+                <ul>
+                    <li>RNN/CNNの再帰・畳み込み構造を完全に撤廃</li>
+                    <li><strong>「自己注意（self-attention）」メカニズムのみに依存する新アーキテクチャ「Transformer」</strong>を提案</li>
+                    <li>文章中のどこが重要かをAI自身が見つけ出す仕組み</li>
+                </ul>
+                <p class="section-header">最大の利点：圧倒的な並列化可能性</p>
+                <ul>
+                    <li>シーケンス全体の関連性を一度に計算可能</li>
+                    <li>大規模データセット・計算資源での訓練を可能にし、後のLLM時代の礎を築く</li>
+                </ul>
+            </div>
+             <div class="slide">
+                <h3 class="slide-title">初期プレイヤーの形成①：Google DeepMind</h3>
+                <p class="slide-subtitle">才能の獲得と「知能の解明」</p>
+                <p><strong>出来事：</strong> 2014年、GoogleがDeepMindを5億ドル以上で買収</p>
+                <p class="section-header">動機：</p>
+                <ul>
+                    <li>デミス・ハサビスをはじめとする世界トップクラスの才能獲得</li>
+                    <li>「機械学習」と「システム神経科学」の融合によるAGI研究</li>
+                </ul>
+                <p class="section-header">特記事項：</p>
+                <ul>
+                    <li>買収契約の一環として倫理委員会の設置に合意</li>
+                    <li>→ 安全性に関する懸念の初期の表れ</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">初期プレイヤーの形成②：OpenAI</h3>
+                <p class="slide-subtitle">Googleへの対抗と「全人類の利益」</p>
+                <p><strong>出来事：</strong> 2015年、非営利研究機関としてOpenAI設立</p>
+                <p class="section-header">動機：</p>
+                <ul>
+                    <li>AIの潜在的危険性と、利益が一企業（Google）に独占されることへの懸念</li>
+                </ul>
+                <p class="section-header">当初の誓い：</p>
+                <ul>
+                    <li>安全なAGIを開発し、成果をオープンソース化する</li>
+                    <li>→ 後の商業化路線とは著しい対照</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 第2章 -->
+        <section id="chapter2">
+            <h2 class="chapter-title">第2章 選ばれし者（2018-2022年）：OpenAIの変貌と安全性を巡る分裂</h2>
+            <div class="slide">
+                <h3 class="slide-title">GPTの進化とジレンマ</h3>
+                <p class="slide-subtitle">概念実証から「危険すぎて公開できない」モデルへ</p>
+                <p class="section-header">GPT-1 (2018)：</p>
+                <ul>
+                    <li>汎用モデルの有効性を証明。単一モデルが多様なタスクで最高性能を達成。</li>
+                    <li>新しい手法（コンセプト）が正しいことを証明した</li>
+                </ul>
+                <p class="section-header">GPT-2 (2019)：</p>
+                <ul>
+                    <li>能力が飛躍的に向上し、驚くほど首尾一貫した文章を生成。</li>
+                    <li>コンセプトを極限までチューンナップしたらどうなるか試した</li>
+                    <li>モデルのサイズ（いわばエンジンの排気量）と学習データ（燃料）を10倍以上に</li>
+                </ul>
+                <p class="section-header">ジレンマ：</p>
+                <ul>
+                    <li>悪用（フェイクニュース、プロパガンダ）を恐れ、完全モデルの公開を差し控える。</li>
+                    <li>→ 生成AIの安全性に関する初の大きな公開討論へ。</li>
+                </ul>
+            </div>
+             <div class="slide">
+                <h3 class="slide-title">決定的な転換：Microsoftとの提携</h3>
+                <p class="slide-subtitle">理想から現実へ：利益上限付きモデルへの移行</p>
+                <p><strong>課題：</strong> 大規模モデルの訓練コストが非営利団体の財政能力を超過</p>
+                <p><strong>解決策 (2019年3月)：</strong> 「利益上限付き（capped-profit）」子会社 OpenAI LP を設立</p>
+                <p class="section-header">戦略的提携 (2019年7月)：</p>
+                <ul>
+                    <li>Microsoftが10億ドルを投資</li>
+                    <li>OpenAIはAzureの巨大な計算基盤へのアクセスを確保</li>
+                    <li>MicrosoftはOpenAI技術への独占的ライセンス権を獲得</li>
+                </ul>
+                 <div class="diagram-container">
+                    <div class="diagram-item microsoft-logo">Microsoft</div>
+                    <div class="diagram-arrow">
+                        <div>→ 10億ドル & 計算資源 →</div>
+                        <div>← 独占的ライセンス権 ←</div>
+                    </div>
+                    <div class="diagram-item openai-logo">OpenAI</div>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">分裂：Anthropicの創設</h3>
+                <p class="slide-subtitle">安全性を巡るイデオロギーの亀裂</p>
+                <p><strong>背景：</strong> GPT-3の商業的成功とMicrosoftとの深い統合</p>
+                <p class="section-header">対立点：</p>
+                <ul>
+                    <li>OpenAIが安全性よりも商業化や市場優位性を優先しているのではないか？</li>
+                    <li>モデル能力の拡大ペース > 安全性確保の能力</li>
+                </ul>
+                <p class="section-header">結果 (2021年)：</p>
+                <ul>
+                    <li>ダリオ・アモデイ兄妹ら、安全性チームの主要メンバーがOpenAIを退社。</li>
+                    <li>安全性を最優先する「Anthropic」を設立。</li>
+                    <li>→ Anthropicは、OpenAIの新たな路線に対する思想的アンチテーゼとして誕生。</li>
+                </ul>
+            </div>
+             <div class="slide">
+                <h3 class="slide-title">ChatGPT前夜：最後の技術的ピース</h3>
+                <p class="slide-subtitle">RLHF：AIを「使える製品」に変えた魔法</p>
+                <p><strong>技術 (2022年)：</strong> InstructGPTと<strong>「人間のフィードバックからの強化学習（RLHF）」</strong></p>
+                <p class="section-header">RLHFのプロセス：</p>
+                <div class="diagram-container">
+                    <div class="diagram-item">1. 人間のデモデータでファインチューニング</div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-item">2. 人間が好む出力をランク付けし、報酬モデルを訓練</div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-item">3. 報酬モデルを基準に強化学習でモデルを最適化</div>
+                </div>
+                <p class="section-header">効果：</p>
+                <ul>
+                    <li>モデルをより「有益で、誠実で、無害」に調整</li>
+                    <li>強力な技術を、誰もが使える魅力的な<strong>「製品」</strong>へと昇華させる鍵となった</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 第3章 -->
+        <section id="chapter3">
+            <h2 class="chapter-title">第3章 カンブリア爆発（2022年後半-2023年）：ChatGPTの瞬間</h2>
+            <div class="slide">
+                <h3 class="slide-title">ChatGPTのローンチと衝撃</h3>
+                <p class="slide-subtitle">世界を変えたローンチ (2022年11月30日)</p>
+                <p><strong>出来事：</strong> OpenAIがChatGPTを一般公開</p>
+                <p class="section-header">影響：</p>
+                <ul>
+                    <li>わずか1週間でユーザー数100万人を突破</li>
+                    <li>直感的な対話型UIとアクセシビリティがAIを大衆に民主化</li>
+                </ul>
+                <p><strong>本質：</strong> 強力な<strong>「テクノロジー」が、使いやすい「製品」</strong>へと進化した瞬間</p>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">Googleの「コードレッド」</h3>
+                <p class="slide-subtitle">巨人が受けた衝撃波</p>
+                <p><strong>危機感：</strong> ChatGPTは中核事業（検索、広告）への存亡の危機と認識</p>
+                <p class="section-header">対応：</p>
+                <ul>
+                    <li>サンダー・ピチャイCEOが<strong>「コードレッド」</strong>を発令</li>
+                    <li>全社的にAI製品開発を急加速</li>
+                </ul>
+                <p class="section-header">結果：Bardの拙速な発表 (2023年2月)</p>
+                <ul>
+                    <li>宣伝資料での事実誤認により、Alphabetの時価総額が1000億ドル消失</li>
+                    <li style="list-style:none; padding-left: 5px;">「ジェイムズ・ウェッб宇宙望遠鏡がどんな新発見をした？」という質問に対し、「太陽系外惑星の最初の写真を撮影した」という誤った回答を生成してしまった。</li>
+                    <li>スピードを追求するリスクを全世界に露呈</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">Googleの組織再編</h3>
+                <p class="slide-subtitle">危機感が促した「Google DeepMind」の誕生</p>
+                <p><strong>課題：</strong> 2つの最高峰AI研究所が社内に併存・競合</p>
+                <ul>
+                    <li><strong>Google Brain:</strong> Transformerの発明者、TensorFlowの開発元</li>
+                    <li><strong>DeepMind:</strong> AGI研究のパイオニア</li>
+                </ul>
+                <p class="section-header">解決策 (2023年4月)：</p>
+                <ul>
+                    <li>両チームを単一組織 「Google DeepMind」 へと統合</li>
+                </ul>
+                <p><strong>目的：</strong> 人材と計算資源を統合し、OpenAIに対抗する製品開発を加速</p>
+            </div>
+             <div class="slide">
+                <h3 class="slide-title">OpenAIの追撃とMicrosoftとの関係深化</h3>
+                 <p class="slide-subtitle">攻勢を続ける先行者</p>
+                 <p class="section-header">GPT-4のリリース (2023年3月)：</p>
+                 <ul>
+                    <li>画像入力を受け付けるマルチモーダル機能を導入</li>
+                    <li>幅広い専門分野で優れた性能を発揮</li>
+                </ul>
+                <p class="section-header">Microsoftとの関係深化 (2023年1月)：</p>
+                <ul>
+                    <li>Microsoftが新たに100億ドルの追加投資を発表</li>
+                    <li>MicrosoftはOpenAI利益の49%を得る権利を獲得</li>
+                    <li>資本力と戦略的提携がAI開発競争の鍵であることを明確化</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 第4章 -->
+        <section id="chapter4">
+            <h2 class="chapter-title">第4章 対抗勢力の台頭（2021-2024年）：Anthropic、Meta、そして挑戦者たち</h2>
+            <div class="slide">
+                <h3 class="slide-title">Anthropic①：安全性を戦略の中核に</h3>
+                <p class="slide-subtitle">思想的アンチテーゼの具体化</p>
+                <p class="section-header">技術：憲法AI (Constitutional AI)</p>
+                <p>RLHFの課題を克服：</p>
+                <ul>
+                    <li><strong>バイアスの問題：</strong> AIは評価者の個人的な価値観や文化的な偏りまで学習してしまう。</li>
+                    <li><strong>労働集約性の問題：</strong> 人間が膨大な回答を評価・ランク付けする必要があり、手間とコストがかかりすぎる。</li>
+                </ul>
+                <div class="quote">
+                    <p><strong>具体的なニュース事例：</strong> 2023年、TIME誌はOpenAIがChatGPTの有害性を減らすため、ケニアの労働者に時給2ドル未満で有害なテキストをラベル付けさせていたと報道。RLHFの倫理的・コスト的課題を象徴する出来事となった。</p>
+                </div>
+                <p>AI自身が「憲法」（人権宣言など）に基づき振る舞いを自己監督</p>
+                <p class="section-header">ガバナンス：公益法人 (PBC) + 長期利益信託 (LTBT)</p>
+                <p>利益追求よりも「人類への貢献」という使命を優先させる革新的な仕組み</p>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">Anthropic②：巧みなマルチクラウド戦略</h3>
+                <p class="slide-subtitle">独立性を守るためのアライアンス</p>
+                <p><strong>戦略：</strong> 単一プロバイダーへの依存を回避し、競争力学を生み出す</p>
+                <p class="section-header">主要パートナー：</p>
+                 <div class="diagram-container">
+                    <div class="diagram-item aws-logo">Amazon<br>(最大80億ドル投資)</div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-item anthropic-logo">Anthropic</div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-item google-logo">Google<br>(最大20億ドル投資)</div>
+                </div>
+                <p class="section-header">効果：</p>
+                <ul>
+                    <li>膨大なリソースを確保しつつ、クラウドの巨人たちを互いに競わせる</li>
+                    <li>OpenAIが抱える（Microsoftへの）戦略的脆弱性を回避</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">Metaのオープンソース戦略</h3>
+                <p class="slide-subtitle">Llama：モデルレイヤーのコモディティ化を狙う</p>
+                <p><strong>戦略：</strong> 強力なLlamaモデルを<strong>オープンソース（オープンウェイト）</strong>で公開</p>
+                <p class="section-header">目的（冷徹な計算）：</p>
+                <ul>
+                    <li>競合（OpenAI, Anthropic）の中核事業である<strong>「モデル」そのものをコモディティ化</strong>する</li>
+                    <li>エコシステムを育成し、イノベーションを加速</li>
+                    <li>競合のAPIベースのビジネスモデルを弱体化させる</li>
+                </ul>
+                <p><strong>成果：</strong> Llama 3.1 405Bは初の<strong>「フロンティアレベルのオープンソースAI」</strong>に</p>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">その他の挑戦者たち</h3>
+                <p class="slide-subtitle">欧州の雄とワイルドカード</p>
+                <p class="section-header">Mistral AI (フランス、2023年設立)：</p>
+                <ul>
+                    <li><strong>ハイブリッド戦略：</strong>高効率な小型モデルはオープンソースで公開し、最強力なモデル（Mistral Large）は商用APIで提供。</li>
+                    <li>ヨーロッパを代表するAIスタートアップに急成長。</li>
+                </ul>
+                <p class="section-header">xAI (米国、2023年設立)：</p>
+                <ul>
+                    <li><strong>創業者：</strong> イーロン・マスク</li>
+                    <li><strong>ミッション：</strong> 「宇宙の真の姿を理解する」「真実を追求する」AI</li>
+                    <li><strong>差別化要因：</strong> X（旧Twitter）のリアルタイムデータへのアクセス、Grokの「反抗的」な個性</li>
+                    <li><strong>資金力：</strong> 120億ドル以上を調達し、本格的な競争相手に</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 第5章 -->
+        <section id="chapter5">
+            <h2 class="chapter-title">第5章 現代の戦場（2024年-2025年半ば）：覇権を巡る戦争</h2>
+            <div class="slide">
+                <h3 class="slide-title">能力開発競争①：対話体験の革新</h3>
+                <p class="slide-subtitle">より自然なインタラクションへ</p>
+                <p class="section-header">OpenAI: GPT-4o (2024年5月)</p>
+                <ul>
+                    <li><strong>ネイティブ・マルチモーダル：</strong> テキスト、音声、視覚を単一モデルで処理</li>
+                    <li><strong>成果：</strong> 表現力豊かで、ミリ秒単位で応答するリアルタイム音声対話を実現</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">能力開発競争②：コンテキストと推論の深化</h3>
+                <p class="slide-subtitle">より深く、賢い思考へ</p>
+                <p class="section-header">Google: Gemini 1.5 Pro (2024年2月)</p>
+                <ul>
+                    <li><strong>巨大コンテキストウィンドウ：</strong> 最大200万トークン。コードベース全体や数時間の動画を一度に処理可能に。</li>
+                </ul>
+                <p class="section-header">Google: Gemini 2.5 (2025年5月)</p>
+                <ul>
+                    <li><strong>「思考バジェット」：</strong> 回答前に明示的な推論ステップを踏むことで、複雑なタスクの精度を向上。</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">能力開発競争③：安全性と性能の両立</h3>
+                <p class="slide-subtitle">安全性第一が性能を超える瞬間</p>
+                <p class="section-header">Anthropic: Claude 3 & 4 (2024-2025年)</p>
+                <ul>
+                    <li><strong>Claude 3 Opus (2024年)：</strong> いくつかの主要ベンチマークでGPT-4を上回る性能を示し、安全性と性能の両立を証明。</li>
+                    <li><strong>Claude Opus 4 (2025年)：</strong>
+                        <ul>
+                            <li style="list-style-type:circle;">内部テストでCBRN兵器製造支援の可能性が示唆される。</li>
+                            <li style="list-style-type:circle;">初のAI安全レベル3 (ASL-3) プロトコルを発動。</li>
+                        </ul>
+                    </li>
+                    <li>→ フロンティアモデルの軍民両用リスクを公に認め、責任あるスケーリング方針の実践を示す画期的な出来事。</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">OpenAIのガバナンス危機 (2023年11月)</h3>
+                <p class="slide-subtitle">5日間の混乱：CEO解任と復活劇</p>
+                <p><strong>出来事：</strong> 取締役会がサム・アルトマンCEOを突如解任</p>
+                <p class="section-header">根底の対立：</p>
+                <ul>
+                    <li>アルトマンの積極的な商業化 vs. 取締役会の安全性への懸念</li>
+                </ul>
+                <p class="section-header">結末：</p>
+                <ul>
+                    <li>従業員のほぼ全員が辞任を表明し、クーデターは失敗</li>
+                    <li>アルトマンはCEOに復帰し、彼を解任した取締役会は総入れ替え</li>
+                </ul>
+                <p><strong>教訓：</strong> OpenAIにおける真の権力が資本と主要な人材にあることを証明</p>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">危機の余波：スーパーアラインメントチームの離散</h3>
+                <p class="slide-subtitle">安全性派閥の流出とAnthropicの勝利</p>
+                <p class="section-header">主要人物の動向：</p>
+                <ul>
+                    <li><strong>イリヤ・スツケヴァー (共同創業者)：</strong> 2024年5月、新たな安全志向のベンチャー設立のため退社。</li>
+                    <li><strong>ヤン・ライク (スーパーアラインメント共同リーダー)：</strong> 「安全文化が二の次にされている」と公に批判し辞任。</li>
+                </ul>
+                <p class="section-header">決定的な移籍 (2024年5月末)：</p>
+                <ul>
+                    <li>ヤン・ライクがAnthropicに入社</li>
+                    <li>→ OpenAIからトップクラスの安全研究者が流出し、思想的ライバルであるAnthropicに戦略的・広報的な大勝利をもたらした。</li>
+                </ul>
+            </div>
+            <div class="slide">
+                 <h3 class="slide-title">【年表】AI開発競争の軌跡</h3>
+                 <div class="timeline">
+                    <div class="timeline-item"><div class="timeline-content"><h4>2017</h4><p><span class="logo google-logo">Google</span> "Attention Is All You Need"</p></div></div>
+                    <div class="timeline-item"><div class="timeline-content"><h4>2018</h4><p><span class="logo openai-logo">OpenAI</span> GPT-1</p></div></div>
+                    <div class="timeline-item"><div class="timeline-content"><h4>2022.11</h4><p><span class="logo openai-logo">OpenAI</span> ChatGPT</p></div></div>
+                    <div class="timeline-item"><div class="timeline-content"><h4>2023.03</h4><p><span class="logo openai-logo">OpenAI</span> GPT-4</p></div></div>
+                    <div class="timeline-item"><div class="timeline-content"><h4>2023.04</h4><p><span class="logo google-logo">Google</span> DeepMind統合</p></div></div>
+                    <div class="timeline-item"><div class="timeline-content"><h4>2024.02</h4><p><span class="logo google-logo">Google</span> Gemini 1.5 Pro (1Mトークン)</p></div></div>
+                    <div class="timeline-item"><div class="timeline-content"><h4>2024.05</h4><p><span class="logo openai-logo">OpenAI</span> GPT-4o (リアルタイム・マルチモーダル)</p></div></div>
+                    <div class="timeline-item"><div class="timeline-content"><h4>2025.05</h4><p><span class="logo anthropic-logo">Anthropic</span> Claude Opus 4 (ASL-3発動)</p></div></div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- 第6章 -->
+        <section id="chapter6">
+            <h2 class="chapter-title">第6章 監視の目（2024年-2025年）：規制と戦略的提携</h2>
+            <div class="slide">
+                <h3 class="slide-title">クラウドパートナーシップへの精査</h3>
+                <p class="slide-subtitle">規制当局が警戒する「事実上の合併」</p>
+                <p><strong>懸念：</strong> AIラボとクラウド大手の深い関係が競争を阻害する可能性</p>
+                <p class="section-header">主な動き：</p>
+                <ul>
+                    <li><strong>米国FTC (2024年1月〜)：</strong>連邦取引委員会が Microsoft-OpenAI, Amazon-Anthropic, Google-Anthropicの3つの提携について調査を開始。</li>
+                    <li><strong>英国CMA (2023年12月〜2025年3月)：</strong>
+                        <ul>
+                            <li style="list-style-type:circle;">競争・市場庁がMicrosoft-OpenAI提携を調査。</li>
+                            <li style="list-style-type:circle;">結論：「事実上の支配」には至っていないと判断し、本格的な合併審査には付託せず。</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">欧州の道：AI法とデジタル主権</h3>
+                <p class="slide-subtitle">リスク管理と域内エコシステム構築</p>
+                <p class="section-header">EU AI法：</p>
+                <ul>
+                    <li>包括的かつ水平的な規制</li>
+                    <li>リスクベースのアプローチを採用し、「高リスク」AIに厳格な要件を課す</li>
+                </ul>
+                <p class="section-header">デジタル主権の追求：</p>
+                <ul>
+                    <li>外国（主に米国）のクラウドプロバイダーへの依存を低減する狙い</li>
+                    <li>「クラウド・AI開発法」などでEU自身のデータ処理能力向上を目指す</li>
+                </ul>
+                <p class="section-header">共生的かつ危険な関係：</p>
+                <ul>
+                    <li>AIラボは計算資源なしに存在できない</li>
+                    <li>クラウドプロバイダーの成長はAIワークロードに大きく依存</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">【全体像】AI三頭体制：戦略的パートナーシップ</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>AI開発者</th><th>企業パートナー</th><th>主要な投資額（累計）</th><th>パートナーシップの性質</th><th>規制状況</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="logo openai-logo">OpenAI</span></td><td><span class="logo microsoft-logo">Microsoft</span></td><td>130億ドル以上</td><td>独占的クラウド (Azure)</td><td>FTC調査中, CMA調査終了</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><span class="logo anthropic-logo">Anthropic</span></td><td><span class="logo aws-logo">Amazon</span></td><td>80億ドル約束</td><td>主要クラウド (AWS), カスタムチップ</td><td>FTC調査中</td>
+                        </tr>
+                        <tr>
+                            <td><span class="logo google-logo">Google</span></td><td>20億ドル約束</td><td>クラウドパートナー (Vertex AI)</td><td>FTC調査中</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- 結論セクション -->
+        <section id="conclusion">
+            <h2 class="chapter-title">結論</h2>
+            <div class="slide">
+                <h3 class="slide-title">結論①：戦略の統合分析</h3>
+                <p class="slide-subtitle">三つの哲学、三つの戦略</p>
+                <p class="section-header">OpenAI / Microsoft:</p>
+                <ul>
+                    <li><strong>戦略：</strong> 積極的な商業化と製品主導の成長</li>
+                    <li><strong>課題：</strong> ガバナンスリスクと「速く動く」文化の管理</li>
+                </ul>
+                <p class="section-header">Anthropic / Amazon / Google:</p>
+                <ul>
+                    <li><strong>戦略：</strong> 製品としての安全性と戦略的独立性（マルチクラウド）</li>
+                    <li><strong>課題：</strong> 安全性と性能の両立、そして商業的実行可能性の証明</li>
+                </ul>
+                <p class="section-header">Google DeepMind:</p>
+                <ul>
+                    <li><strong>戦略：</strong> 深い垂直統合（チップからデータ、クラウドまで全てを所有）</li>
+                    <li><strong>課題：</strong> 巨大企業の官僚的な惰性を乗り越え、機敏な競合のスピードに対抗すること</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">結論②：未解決の問い</h3>
+                <p class="slide-subtitle">AIの未来を形作る3つの論点</p>
+                <p class="section-header">オープン vs. クローズドの戦い</p>
+                <ul>
+                    <li>Metaのオープンソース戦略は、超高性能なAI非公開モデルの牙城を崩せるか？</li>
+                </ul>
+                <p class="section-header">ガバナンスの未来</p>
+                <ul>
+                    <li>OpenAIの新体制は商業化圧力に耐えられるか？ AnthropicのLTBTは実効性を示せるか？</li>
+                </ul>
+                <p class="section-header">規制の最終局面</p>
+                <ul>
+                    <li>クラウドパートナーシップへの精査は業界をどう再編するか？ 安全基準は義務化されるか？</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h3 class="slide-title">最終結論</h3>
+                <p class="slide-subtitle">一つの不確かな未来</p>
+                <p><strong>キーメッセージ：</strong></p>
+                <ul>
+                    <li>生成AI革命はまだ初期段階にある。「御三家」が現在確立されているが、盤石ではない。</li>
+                    <li>これからの数年間は、<strong>「3つの哲学の衝突」「挑戦者の破壊的可能性」「規制当局の監視の目」</strong>によって定義される。</li>
+                    <li>AGIを構築する競争は続く。</li>
+                </ul>
+                <div class="quote">
+                    <p>しかし、その新しい世界のルールを定義する競争は、まだ始まったばかりである。</p>
+                </div>
+            </div>
+            <div class="slide references">
+                <h3 class="slide-title">引用文献</h3>
+                <ul>
+                    <li><a href="https://www.kellton.com/kellton-tech-blog/redefining-the-game-generative-ai-and-chatgpt-unlock-new-possibilities-across-industries" target="_blank">Impact of Generative AI... | kellton</a></li>
+                    <li><a href="https://time.com/7204661/ai-solve-problems-trust/" target="_blank">Solving Real-World Problems... | TIME</a></li>
+                    <li><a href="https://www.gmosign.com/media/work-style/open-ai/" target="_blank">オープンAI(Open AI)とは？... | GMOサインブログ</a></li>
+                    <li><a href="https://gigazine.net/news/20151214-elon-musk-y-combinator-openai/" target="_blank">ロボットの悪用を防ぐ...「OpenAI」が...設立される - GIGAZINE</a></li>
+                    <li><a href="https://openai.com/our-structure/" target="_blank">Our structure | OpenAI</a></li>
+                    <li><a href="https://ja.wikipedia.org/wiki/Google_DeepMind" target="_blank">Google DeepMind - Wikipedia</a></li>
+                    <li><a href="https://wartimeceostories.com/p/speed-over-safety" target="_blank">Why Anthropic is Betting Big on AI Safety...</a></li>
+                    <li><a href="https://research.contrary.com/company/anthropic" target="_blank">Report: Anthropic Business Breakdown... | Contrary Research</a></li>
+                    <li><a href="https://openai.com/index/gpt-4-1/" target="_blank">Introducing GPT-4.1 in the API - OpenAI</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models" target="_blank">Azure OpenAI in Azure AI Foundry Models...</a></li>
+                    <li><a href="https://developers.googleblog.com/en/gemini-2-5-thinking-model-updates/" target="_blank">Gemini 2.5: Updates to our family of thinking models...</a></li>
+                    <li><a href="https://www.maginative.com/article/anthropics-claude-4-is-here-and-its-breaking-new-ground-and-safety-protocols/" target="_blank">Anthropic's Claude 4 Is Here...</a></li>
+                    <li><a href="https://openai.com/index/hello-gpt-4o/" target="_blank">Hello GPT-4o - OpenAI</a></li>
+                    <li><a href="https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/" target="_blank">Our next-generation model: Gemini 1.5 - Google Blog</a></li>
+                    <li><a href="https://cloud.google.com/vertex-ai/generative-ai/docs/thinking" target="_blank">Thinking | Generative AI on Vertex AI - Google Cloud</a></li>
+                    <li><a href="https://www-cdn.anthropic.com/7512771452629584566b6303311496c262da1006/Anthropic_ConstitutionalAI_v2.pdf" target="_blank">Constitutional AI: Harmlessness from AI Feedback...</a></li>
+                    <li><a href="https://www.anthropic.com/news/activating-asl3-protections" target="_blank">Activating AI Safety Level 3 Protections - Anthropic</a></li>
+                    <li><a href="https://law.stanford.edu/2025/03/21/ai-partnerships-beyond-control-lessons-from-the-openai-microsoft-saga/" target="_blank">AI Partnerships Beyond Control... | CodeX</a></li>
+                    <li><a href="https://spearhead.so/why-google-has-the-strongest-vertical-stack-in-ai/" target="_blank">Why Google Has The Strongest Vertical Stack In AI...</a></li>
+                    <li><a href="https://www.geekwire.com/2025/amazon-deepens-anthropic-ties-with-equity-conversion-adding-billions-to-q1-profit/" target="_blank">Amazon deepens Anthropic ties... | GeekWire</a></li>
+                    <li><a href="https://www.anthropic.com/events/google-cloud-next-2025" target="_blank">Google Cloud Next 2025 - Anthropic</a></li>
+                    <li><a href="https://www.anthropic.com/news/the-long-term-benefit-trust" target="_blank">The Long-Term Benefit Trust - Anthropic</a></li>
+                    <li><a href="https://www.oxen.ai/blog/arxiv-dives-attention-is-all-you-need" target="_blank">Arxiv Dives - Attention Is All You Need - Oxen.ai</a></li>
+                    <li><a href="https://arxiv.org/abs/1706.03762" target="_blank">[1706.03762] Attention Is All You Need - arXiv</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Attention_Is_All_You_Need" target="_blank">Attention Is All You Need - Wikipedia</a></li>
+                    <li><a href="https://arxiv.org/html/1706.03762v7" target="_blank">Attention Is All You Need - arXiv (html)</a></li>
+                    <li><a href="https://gigazine.net/news/20140128-google-buy-deepmind/" target="_blank">Googleが...「DeepMind」を500億円で買収 - GIGAZINE</a></li>
+                    <li><a href="https://www.gizmodo.jp/2014/01/5515.html" target="_blank">グーグルが人工知能の会社を5億ドル...で買収 | ギズモード</a></li>
+                    <li><a href="https://qiita.com/akagi_hayato/items/46720efeb0756dc8df64" target="_blank">Google （1. 2000~2014年ごろ：...）</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Google_DeepMind" target="_blank">Google DeepMind - Wikipedia (en)</a></li>
+                    <li><a href="https://ja.wikipedia.org/wiki/OpenAI" target="_blank">OpenAI - Wikipedia (ja)</a></li>
+                    <li><a href="https://note.com/global_media_com/n/n502070c66036" target="_blank">ChatGPTの創業者たちとOpenAIの設立背景｜note</a></li>
+                    <li><a href="https://yourstory.com/ai-story/openai-u-turn-walks-away-from-for-profit-model-explainer" target="_blank">All you need to know about OpenAI's U-turn... | YourStory</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/GPT-1" target="_blank">GPT-1 - Wikipedia</a></li>
+                    <li><a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank">Improving Language Understanding by Generative Pre-Training...</a></li>
+                    <li><a href="https://songhuiming.github.io/pages/2023/05/28/gpt-1-gpt-2-gpt-3-instructgpt-chatgpt-and-gpt-4-summary/" target="_blank">GPT-1, GPT-2, GPT-3, ... summary</a></li>
+                    <li><a href="https://devm.io/machine-learning/openai-releases-language-model-gpt-2-163881" target="_blank">OpenAI finally releases “dangerous”... GPT-2</a></li>
+                    <li><a href="https://openai.com/index/better-language-models/" target="_blank">Better language models and their implications - OpenAI</a></li>
+                    <li><a href="https://blogs.ischool.berkeley.edu/w231/2021/02/24/bias-in-large-language-models-gpt-2-as-a-case-study/" target="_blank">Bias in Large Language Models: GPT-2...</a></li>
+                    <li><a href="https://www.sia-partners.com/en/insights/publications/gpt-2-openai-better-nlp-model-and-ethics-issues-it-raises" target="_blank">GPT-2 from OpenAI... | SIA Partners</a></li>
+                    <li><a href="https://cdn.openai.com/GPT_2_August_Report.pdf" target="_blank">Release Strategies and the Social Impacts...</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/OpenAI" target="_blank">OpenAI - Wikipedia (en)</a></li>
+                    <li><a href="https://scholarsbank.uoregon.edu/bitstreams/01e1552c-5003-4286-9877-1a693fded0dd/download" target="_blank">OpenAI's Fault Lines... | Scholars' Bank</a></li>
+                    <li><a href="https://www.upstock.io/post/openai-and-capped-profit-model-redefining-profitability-in-ai-and-the-role-of-employee-equity" target="_blank">OpenAI and Capped Profit Model... | Upstock</a></li>
+                    <li><a href="https://assets.publishing.service.gov.uk/media/67c841d6d0fba2f1334cf276/1._MS.OAI_-_Summary.pdf" target="_blank">Microsoft Corporation's partnership with OpenAI, Inc. - GOV.UK</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/GPT-3" target="_blank">GPT-3 - Wikipedia</a></li>
+                    <li><a href="https://developer.nvidia.com/blog/openai-presents-gpt-3-a-175-billion-parameters-language-model/" target="_blank">OpenAI Presents GPT-3... | NVIDIA Technical Blog</a></li>
+                    <li><a href="https://www.springboard.com/blog/data-science/machine-learning-gpt-3-open-ai/" target="_blank">OpenAI GPT-3: Everything You Need to Know...</a></li>
+                    <li><a href="https://arxiv.org/abs/2005.14165" target="_blank">[2005.14165] Language Models are Few-Shot Learners - arXiv</a></li>
+                    <li><a href="https://openai.com/index/gpt-3-apps/" target="_blank">GPT-3 powers the next generation of apps - OpenAI</a></li>
+                    <li><a href="https://www.reddit.com/r/ControlProblem/comments/1iyb7ov/key_openai_departures_over_ai_safety_or/" target="_blank">Key OpenAI Departures... : r/ControlProblem - Reddit</a></li>
+                    <li><a href="https://www.theaireport.ai/articles/leike-openais-loss-anthropics-gain" target="_blank">Leike: OpenAI's loss, Anthropic's gain? | AI Tool Report</a></li>
+                    <li><a href="https://kitrum.com/blog/the-inspiring-story-of-daniela-amodei-anthropics-leader/" target="_blank">The Inspiring Story of Daniela Amodei... | KITRUM</a></li>
+                    <li><a href="https://openai.com/index/instruction-following/" target="_blank">Aligning language models to follow instructions - OpenAI</a></li>
+                    <li><a href="https://www.ibm.com/think/topics/rlhf" target="_blank">What Is Reinforcement Learning From Human Feedback (RLHF)? - IBM</a></li>
+                    <li><a href="https://cdn.openai.com/papers/Training_language_models_to_follow_instructions_with_human_feedback.pdf" target="_blank">Training language models to follow instructions...</a></li>
+                    <li><a href="https://huyenchip.com/2023/05/02/rlhf.html" target="_blank">RLHF: Reinforcement Learning from Human Feedback...</a></li>
+                    <li><a href="https://assets.kpmg.com/content/dam/kpmgsites/se/pdf/2025/the-impact-of-chatgpt-and-ai-brochure.pdf" target="_blank">The potential impact of ChatGPT... | KPMG</a></li>
+                    <li><a href="https://community.sap.com/t5/human-capital-management-blog-posts-by-sap/the-future-of-work-is-now-an-update-on-generative-ai-at-sap-successfactors/m-p/13554058" target="_blank">The future of work is now... | SAP</a></li>
+                    <li><a href="https://graffersid.com/what-made-chatgpt-successful-in-ai-industry/" target="_blank">What Made ChatGPT Successful... | GraffersID</a></li>
+                    <li><a href="https://cognitivepath.com/ai-impact/" target="_blank">ChatGPT: AI's Impact After Two Years - CognitivePath</a></li>
+                    <li><a href="https://mashable.com/article/bard-google-ai-chatgpt-rival-explained" target="_blank">Google Bard: Everything we know... | Mashable</a></li>
+                    <li><a href="https://www.weforum.org/stories/2023/02/google-chatgpt-bard-ai/" target="_blank">Google just revealed its... Bard | World Economic Forum</a></li>
+                    <li><a href="https://bondedagency.com/googles-founders-response-to-chatgpt-code-red/" target="_blank">Google's founders' response to ChatGPT 'Code Red'</a></li>
+                    <li><a href="https://techinformed.com/google-tunes-in-to-ai-chatbot-bard/" target="_blank">Google tunes in to AI chatbot Bard - TechInformed</a></li>
+                    <li><a href="https://eclear.com/article/chatbot-bard-googles-response-to-chatgpt/" target="_blank">Chatbot Bard: Google's response to ChatGPT - eClear AG</a></li>
+                    <li><a href="https://www.coderedcomms.com/knowledge-hub/global-insights/googles-bard-ai-makes-error/" target="_blank">Google's $100 Billion Mistake... - Code Red</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Google_Brain" target="_blank">Google Brain - Wikipedia</a></li>
+                    <li><a href="https://siliconangle.com/2023/04/20/google-merges-deepmind-google-brain-ai-research-groups/" target="_blank">Google merges its DeepMind and Google Brain...</a></li>
+                    <li><a href="https://www.silicon.co.uk/e-innovation/artificial-intelligence/google-consolidates-deepmind-and-ai-research-teams-559660" target="_blank">Google Consolidates DeepMind And AI Research Teams</a></li>
+                    <li><a href="https://lobehub.com/blog/claude-3-vs-gpt-4" target="_blank">Comparison of Claude 3 and GPT-4 - LobeHub</a></li>
+                    <li><a href="https://www.researchgate.net/publication/391400510_Constitutional_AI_An_Expanded_Overview_of_Anthropic's_Alignment_Approach" target="_blank">Constitutional AI: An Expanded Overview...</a></li>
+                    <li><a href="https://digi-con.org/on-constitutional-ai/" target="_blank">On 'Constitutional' AI - The Digital Constitutionalist</a></li>
+                    <li><a href="https://www.anthropic.com/news/claudes-constitution" target="_blank">Claude's Constitution - Anthropic</a></li>
+                    <li><a href="https://www.anthropic.com/company" target="_blank">Company | Anthropic</a></li>
+                    <li><a href="https://corpgov.law.harvard.edu/2023/10/28/anthropic-long-term-benefit-trust/" target="_blank">Anthropic Long-Term Benefit Trust - The Harvard Law School Forum...</a></li>
+                    <li><a href="https://cloud.google.com/products/model-garden/claude" target="_blank">Try Anthropic's Claude models on Google Cloud's Vertex AI</a></li>
+                    <li><a href="https://timesofindia.indiatimes.com/technology/tech-news/openais-executive-who-quit-over-safety-concerns-joins-amazon-and-google-backed-anthropic/articleshow/110522372.cms" target="_blank">OpenAI's executive who quit... joins Anthropic - Times of India</a></li>
+                    <li><a href="https://www.semafor.com/article/03/14/2025/amazons-trainium-chips-to-be-tested-by-anthropic" target="_blank">The tiny chips behind Amazon's big AI investment - Semafor</a></li>
+                    <li><a href="https://www.aboutamazon.com/news/aws/amazon-invests-additional-4-billion-anthropic-ai" target="_blank">Amazon and Anthropic deepen strategic collaboration</a></li>
+                    <li><a href="https://www.investopedia.com/amazon-announces-supercomputer-new-server-in-push-to-take-on-nvidia-8754986" target="_blank">Amazon Announces Supercomputer... - Investopedia</a></li>
+                    <li><a href="https://www.netguru.com/blog/gpt-4-vs-llama-2" target="_blank">Llama vs GPT: Comparing Open-Source Versus Closed-Source...</a></li>
+                    <li><a href="https://about.fb.com/news/2024/07/open-source-ai-is-the-path-forward/" target="_blank">Open Source AI is the Path Forward - About Meta</a></li>
+                    <li><a href="https://www.reddit.com/r/LocalLLaMA/comments/1dqegun/why_did_meta_ai_give_a_100_million_model_for_free/" target="_blank">Why did Meta AI give a $100 million model for free? : r/LocalLLaMA</a></li>
+                    <li><a href="https://www.vellum.ai/blog/llama-3-70b-vs-gpt-4-comparison-analysis" target="_blank">Llama 3 70B vs GPT-4: Comparison Analysis - Vellum AI</a></li>
+                    <li><a href="https://www.marktechpost.com/2024/04/23/comparative-analysis-of-llama-3-with-ai-models-like-gpt-4-claude-and-gemini/" target="_blank">Comparative Analysis of Llama 3 with AI Models...</a></li>
+                    <li><a href="https://topmostads.com/mistral-ai-models-strategy/" target="_blank">Mistral AI: Deep Dive on Models & Strategy...</a></li>
+                    <li><a href="https://futureskillsacademy.com/blog/mistral-large-language-model/" target="_blank">A Comprehensive Guide to Mistral Large Language Model...</a></li>
+                    <li><a href="https://docs.mistral.ai/getting-started/models/models_overview/" target="_blank">Models Overview - Mistral AI Documentation</a></li>
+                    <li><a href="https://www.voiceflow.com/blog/mistral-ai" target="_blank">Mistral AI: What It Is, How It Works... - Voiceflow</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/XAI_(company)" target="_blank">xAI (company) - Wikipedia</a></li>
+                    <li><a href="https://x.ai/news/series-b" target="_blank">Series B funding round | xAI</a></li>
+                    <li><a href="https://www.simplilearn.com/grok-ai-article" target="_blank">What Is Grok AI | Features, Benefits and How It Works - Simplilearn</a></li>
+                    <li><a href="https://builtin.com/articles/grok" target="_blank">Grok: What We Know About Elon Musk's AI Chatbot - Built In</a></li>
+                    <li><a href="https://tracxn.com/d/companies/xai/__saKrxbHN3TRWW-I4lYH6zkx6N5P_kMTqlLcKTzWs2ug/funding-and-investors" target="_blank">xAI - 2025 Funding Rounds & List of Investors - Tracxn</a></li>
+                    <li><a href="https://www.socialmediatoday.com/news/xai-seeks-additional-funding-x-formerly-twitter/746451/" target="_blank">xAI Seeks New Funding... | Social Media Today</a></li>
+                    <li><a href="https://pitchbook.com/profiles/company/533035-45" target="_blank">xAI 2025 Company Profile... | PitchBook</a></li>
+                    <li><a href="https://azure.microsoft.com/en-us/blog/introducing-gpt-4o-openais-new-flagship-multimodal-model-now-in-preview-on-azure/" target="_blank">Introducing GPT-4o... on Azure</a></li>
+                    <li><a href="https://blog.google/technology/ai/long-context-window-ai-models/" target="_blank">What is a long context window? Google DeepMind engineers explain</a></li>
+                    <li><a href="https://cloud.google.com/vertex-ai/generative-ai/docs/long-context" target="_blank">Long context | Generative AI on Vertex AI - Google Cloud</a></li>
+                    <li><a href="https://ai.google.dev/gemini-api/docs/thinking" target="_blank">Gemini thinking | Gemini API | Google AI for Developers</a></li>
+                    <li><a href="https://blog.google/technology/google-deepmind/google-gemini-updates-io-2025/" target="_blank">Gemini 2.5: Our most intelligent models are getting even better...</a></li>
+                    <li><a href="https://merge.rocks/blog/claude-3-vs-gpt-4-is-claude-better-than-gpt-4" target="_blank">Claude 3 vs GPT 4: Is Claude better than GPT-4?</a></li>
+                    <li><a href="https://blog.phospho.ai/claude-3-sonnet-vs-gpt-4-what-is-the-best-llm-for-your-app/" target="_blank">Claude 3 Sonnet vs GPT-4... - phospho</a></li>
+                    <li><a href="https://community.openai.com/t/gpt4-comparison-to-anthropic-opus-on-benchmarks/726147" target="_blank">Gpt4 comparison to anthropic Opus on benchmarks - OpenAI Community</a></li>
+                    <li><a href="https://time.com/7287806/anthropic-claude-4-opus-safety-bio-risk/" target="_blank">Exclusive: New Claude Model Triggers Stricter Safeguards... - Time</a></li>
+                    <li><a href="http://anthropic.com/activating-asl3-report" target="_blank">Activating AI Safety Level 3 Protections - Anthropic (Report)</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Removal_of_Sam_Altman_from_OpenAI" target="_blank">Removal of Sam Altman from OpenAI - Wikipedia</a></li>
+                    <li><a href="https://fennel.com/blog/sam-altmans-firing-from-openai-is-a-clear-example-of-governance-risk" target="_blank">Sam Altman's Firing from OpenAI Is a Clear Example of Governance Risk</a></li>
+                    <li><a href="https://www.deeplearning.ai/the-batch/inside-sam-altmans-brief-ouster-from-openai/?utm_campaign=Data%20Points&utm_source=hs_email&utm_medium=email&_hsenc=p2ANqtz-8cCDB3pBmY3yxbXPtgDp31DVY5dXull8hhV89Kggxtwy5XUB-2_inzh3XwgL6f1_v7XJ76" target="_blank">Inside Sam Altman's Brief Ouster from OpenAI - DeepLearning.AI</a></li>
+                    <li><a href="https://www.livemint.com/companies/people/chatgptmaker-openai-ceo-ouster-followed-debates-between-sam-altman-and-the-board-over-ai-safety-and-commercialisation-11700279981505.html" target="_blank">ChatGPT-maker OpenAI CEO ouster followed debates... - Mint</a></li>
+                    <li><a href="https://scholarlycommons.law.case.edu/cgi/viewcontent.cgi?article=1169&context=jolti" target="_blank">SAM ALTMAN, OPENAI, AND THE IMPORTANCE OF CORPORATE GOVERNANCE</a></li>
+                    <li><a href="https://viso.ai/deep-learning/ethics-in-ai-sam-altman-and-openai/" target="_blank">Ethics in AI - What Happened With Sam Altman and OpenAI - Viso Suite</a></li>
+                    <li><a href="https://www.lawfaremedia.org/article/the-promise-and-perils-of-nontraditional-corporate-ai-governance" target="_blank">The Promise and Perils of Nontraditional Corporate AI Governance</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Ilya_Sutskever" target="_blank">Ilya Sutskever - Wikipedia</a></li>
+                    <li><a href="https://time.com/6978195/ilya-sutskever-leaves-open-ai/" target="_blank">Ilya Sutskever, Co-Founder and Chief Scientist, Leaves OpenAI | TIME</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Jan_Leike" target="_blank">Jan Leike - Wikipedia</a></li>
+                    <li><a href="https://qz.com/jan-leike-openai-superalignment-rival-anthropic-ai-safe-1851504247" target="_blank">A former OpenAI safety leader went to rival AI company Anthropic - Quartz</a></li>
+                    <li><a href="https://www.warren.senate.gov/news/press-releases/warren-wyden-launch-investigation-into-google-microsoft-partnerships-with-ai-developers-anthropic-openai" target="_blank">Warren, Wyden Launch Investigation into Google, Microsoft Partnerships...</a></li>
+                    <li><a href="https://www.ftc.gov/news-events/news/press-releases/2025/01/ftc-issues-staff-report-ai-partnerships-investments-study" target="_blank">FTC Issues Staff Report on AI Partnerships & Investments Study</a></li>
+                    <li><a href="https://www.ftc.gov/policy/advocacy-research/tech-at-ftc/2025/01/behind-ftcs-6b-report-large-ai-partnerships-investments" target="_blank">Behind the FTC's 6(b) Report on Large AI Partnerships...</a></li>
+                    <li><a href="https://www.pymnts.com/artificial-intelligence-2/2025/ftc-openai-microsoft-pact-could-bring-competition-implications/" target="_blank">FTC Issues Staff Report on AI Partnerships - PYMNTS.com</a></li>
+                    <li><a href="https://www.macfarlanes.com/what-we-think/102eli5/open-and-shut-lessons-from-the-cma-s-microsoft-openai-merger-inquiry-102kcrh/" target="_blank">Open and shut? Lessons from the CMA's Microsoft/OpenAI merger inquiry</a></li>
+                    <li><a href="https://www.crai.com/engagements/cma-closes-its-merger-inquiry-into-the-microsoft-openai-partnership/" target="_blank">CMA closes its merger inquiry into the Microsoft/OpenAI partnership...</a></li>
+                    <li><a href="https://iclg.com/news/22350-cma-will-not-investigate-microsoft-s-openai-investment" target="_blank">CMA will not investigate Microsoft's OpenAI investment - ICLG.com</a></li>
+                    <li><a href="https://techpost.bsa.org/2025/06/18/ai-refill-whats-on-the-eus-policy-radar/" target="_blank">AI Refill: What's on the EU's Policy Radar | BSA TechPost</a></li>
+                    <li><a href="https://carnegieendowment.org/research/2025/05/the-eus-ai-power-play-between-deregulation-and-innovation?lang=en" target="_blank">The EU's AI Power Play: Between Deregulation and Innovation</a></li>
+                    <li><a href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/14628-Cloud-and-AI-Development-Act_en" target="_blank">Cloud and AI Development Act - Initiative details - European Union</a></li>
+                    <li><a href="https://nvidianews.nvidia.com/news/nvidia-partners-with-europe-model-builders-and-cloud-providers-to-accelerate-regions-leap-into-ai" target="_blank">NVIDIA Partners With Europe Model Builders...</a></li>
+                    <li><a href="https://nvidianews.nvidia.com/news/europe-ai-infrastructure" target="_blank">Europe Builds AI Infrastructure With NVIDIA...</a></li>
+                    <li><a href="https://www.anthropic.com/google-cloud-vertex-ai" target="_blank">Claude on Google Cloud Vertex | Anthropic</a></li>
+                    <li><a href="https://fedscoop.com/palantir-anthropic-google-government-ai-claude-partnership/" target="_blank">Palantir, Anthropic, Google deepen ties... | FedScoop</a></li>
+                    <li><a href="https://anshadameenza.com/blog/technology/google-vertical-ai-integration/" target="_blank">Google: The Only Truly Vertically Integrated AI Company...</a></li>
+                    <li><a href="https://www.ctol.digital/news/google-ai-studio-joins-deepmind-bold-move-or-strategic-misstep/" target="_blank">Google AI Studio Joins DeepMind...</a></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
